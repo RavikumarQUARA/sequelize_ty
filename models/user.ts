@@ -1,5 +1,5 @@
 'use strict';
-import { stringify } from 'querystring';
+//import { stringify } from 'querystring';
 import {
   Model, UUIDV4
 } from 'sequelize'
@@ -25,7 +25,7 @@ module.exports = (sequelize: any, DataTypes:any) => {
      */
     static associate(models: any) {
       // define association here
-      this.hasMany(models.Post, { foreignKey: 'userId', as: 'posts' });
+      this.hasMany(models.Post, { foreignKey: 'userId', as: 'post' });
     }
   }
   User.init({
