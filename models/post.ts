@@ -12,10 +12,10 @@ module.exports = (sequelize: any, DataTypes:any) => {
      */
     static associate(models: any) {
       // define association here
-      this.belongsTo(models.User, { foreignKey: 'userid', as: 'user' });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
     }
     toJSON() {
-      return { ...this.get(),id: undefined,uuid:undefined,}
+      return { ...this.get(),id: undefined ,uuid:undefined}
     }
   }
   Post.init({

@@ -6,12 +6,13 @@ const port = process.env.PORT || 3000;
 import db from './models';
 
 app.use(express.json());
-// create user
+app.use(express.urlencoded({extended: false}))
+// create user //done
 
 app.post('/user', async(req, res) => { 
-    const {email,name,username} = req.body;
+    const {email,name,username,bio} = req.body;
     try {
-        const user = await db.User.create({ email,name,username})
+        const user = await db.User.create({ email,name,username,bio})
             return res.json(user);  
     }catch(error){
         console.log(error)
@@ -20,7 +21,7 @@ app.post('/user', async(req, res) => {
     }
     
 })
-//Read user
+//Read user//done
 
 app.get('/user', async(req, res) => { 
     try {
@@ -33,14 +34,17 @@ app.get('/user', async(req, res) => {
     }
     
 })
-// find user by id
+// find user by id //done
 app.get('/user/:id', async(req, res) =>{
     const id = req.params.id;
     try{
-        const data = await db.User.findByOne({
+        const data = await db.User.findOne({
             where:{id:id},
             include:'posts'
+            
         })
+        //console.log(data)
+        
         return res.json(data);  
     }catch(error){
         console.log(error)
@@ -48,10 +52,10 @@ app.get('/user/:id', async(req, res) =>{
     }
     
 })
-// update user
+// update user 
 app.put('/user/:id', async (req, res) => {
     const id = req.params.id
-    const { name, email, username } = req.body
+    const { name, email, username,bio } = req.body
     
     try {
         const user = await db.User.findOne({ where: { id :id} })
@@ -60,6 +64,7 @@ app.put('/user/:id', async (req, res) => {
         user.name = name
         user.email = email
         user.username= username
+        user.bio= bio
         await user.save()
         res.status(200).json({message: 'success'})
 
@@ -69,12 +74,15 @@ app.put('/user/:id', async (req, res) => {
     }
 // create a post using uuid
 })
-app.post('/posts', async (req, res) => {
-    const { userUuid, tweet, } = req.body
+app.post('/post', async (req, res) => {
+    const { userUuid, tweet} = req.body
     try {
-        const user = await db.User.findOne({ where: { uuid: userUuid }})
-        const post = await db.Post.create({tweet, userId: user.id})
+        const user = await db.User.findOne({ where: { id: userUuid }})
+        const post = await db.Post.create({tweet,userId: user.id})
+        
+        
         return res.json(post)
+
     }catch (error){
         console.log(error)
         return res.status(500).json(error)
@@ -108,7 +116,9 @@ app.get('/posts', async (req, res) => {
     }
 })
 
-db.sequelize.sync().then(() => {
+//db.sequelize.sync().then(() => 
+db.sequelize.authenticate().then(() => 
+{
     app.listen(port, () => {
         console.log(`App is listening on port ${port}`);
 

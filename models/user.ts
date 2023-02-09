@@ -1,6 +1,7 @@
 'use strict';
 //import { stringify } from 'querystring';
 import {
+  DataType,
   Model, UUIDV4
 } from 'sequelize'
 interface UserAttributes {
@@ -8,6 +9,7 @@ interface UserAttributes {
   email: string;
   name: string;
   username: string;
+  bio:string;
 }
 
 module.exports = (sequelize: any, DataTypes:any) => {
@@ -17,6 +19,7 @@ module.exports = (sequelize: any, DataTypes:any) => {
   email!: string;
   name!: string;
   username!: string;
+  bio!:string;
   
     /**
      * Helper method for defining associations.
@@ -60,12 +63,21 @@ module.exports = (sequelize: any, DataTypes:any) => {
         notNull:{msg: 'username is required'},
         notEmpty:{msg: 'username must be not empty'}
       }
+     
+    },
+    bio:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate:{
+        notNull:{msg: 'username is required'},
+        notEmpty:{msg: 'username must be not empty'}
+      }
     }
 
     
   }, {
     sequelize,
-    //tableName: 'users',
+    //tableName: 'Users',
     modelName: 'User',
   });
   return User;
