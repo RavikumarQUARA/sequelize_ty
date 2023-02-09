@@ -22,7 +22,7 @@ app.post('/user', async(req, res) => {
 })
 //Read user
 
-app.post('/user', async(req, res) => { 
+app.get('/user', async(req, res) => { 
     try {
         const user = await db.User.findAll()
             return res.json(user);  
@@ -61,14 +61,15 @@ app.put('/user/:id', async (req, res) => {
         user.email = email
         user.username= username
         await user.save()
-        return res.json(user)
+        res.status(200).json({message: 'success'})
+
     }catch (error){
         console.log(error)
         return res.status(500).json({error: 'Something went wrong'})
     }
 // create a post using uuid
 })
-app.post('/post', async (req, res) => {
+app.post('/posts', async (req, res) => {
     const { userUuid, tweet, } = req.body
     try {
         const user = await db.User.findOne({ where: { uuid: userUuid }})
@@ -84,7 +85,7 @@ app.delete('/user/:id', async (req, res) => {
     const id = req.params.id
 
     try {
-        const user = await User.findOne({where: { id: id },})
+        const user = await db.User.findOne({where: { id: id },})
         await user.destroy()
         
         return res.json({message: 'User has been deleted!'})
@@ -95,7 +96,7 @@ app.delete('/user/:id', async (req, res) => {
 })
 // get all posts
 
-app.get('/post', async (req, res) => {
+app.get('/posts', async (req, res) => {
     
     try {
        const post = await db.Post.findAll({ include: 'user' })
