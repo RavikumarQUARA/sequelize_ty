@@ -9,7 +9,7 @@ interface UserAttributes {
   email: string;
   name: string;
   username: string;
-  bio:string;
+  //bio:string;
 }
 
 module.exports = (sequelize: any, DataTypes:any) => {
@@ -19,7 +19,7 @@ module.exports = (sequelize: any, DataTypes:any) => {
   email!: string;
   name!: string;
   username!: string;
-  bio!:string;
+  //bio!:string;
   
     /**
      * Helper method for defining associations.
@@ -65,15 +65,7 @@ module.exports = (sequelize: any, DataTypes:any) => {
       }
      
     },
-    bio:{
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate:{
-        notNull:{msg: 'username is required'},
-        notEmpty:{msg: 'username must be not empty'}
-      }
-    }
-
+    
     
   }, {
     sequelize,
